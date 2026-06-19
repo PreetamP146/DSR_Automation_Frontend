@@ -1,0 +1,33 @@
+# Build and run the DSR Automation frontend
+#
+# Usage:
+#   docker compose up --build
+#
+# Ensure the Go backend is reachable at NEXT_PUBLIC_API_URL from the browser
+# (default: http://localhost:3000/api)
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000/api}
+    container_name: dsr-frontend
+    ports:
+      - "${FRONTEND_PORT:-3001}:3000"
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

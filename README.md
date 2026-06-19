@@ -133,6 +133,39 @@ src/
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
 
+## Docker
+
+Build and run with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+App: [http://localhost:3001](http://localhost:3001)
+
+### Environment variables (Docker)
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_API_URL` | Backend URL **as seen by the browser** (baked in at build time) | `http://localhost:3000/api` |
+| `FRONTEND_PORT` | Host port mapped to the container | `3001` |
+
+Example with a custom API URL:
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3000/api FRONTEND_PORT=3001 docker compose up --build
+```
+
+> Start the Go backend separately (or add it to your own compose stack). The frontend container only serves the Next.js app.
+
+### Docker files
+
+| File | Purpose |
+|------|---------|
+| `Dockerfile` | Multi-stage production build (Node 20 Alpine, standalone output) |
+| `docker-compose.yml` | Run the frontend service |
+| `.dockerignore` | Exclude `node_modules`, `.next`, env files from build context |
+
 ## Backend API
 
 All data endpoints live under `NEXT_PUBLIC_API_URL` (default `http://localhost:3000/api`).
