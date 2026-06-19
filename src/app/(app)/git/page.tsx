@@ -36,7 +36,7 @@ export default function GitPage() {
     resolver: zodResolver(connectGitSchema),
     defaultValues: {
       provider: "github",
-      base_url: "https://github.com",
+      base_url: "https://api.github.com",
       access_token: "",
     },
   });
@@ -122,7 +122,7 @@ export default function GitPage() {
                 </div>
                 <div className="space-y-2">
                   <Label>Base URL</Label>
-                  <Input {...form.register("base_url")} placeholder="https://github.com" />
+                  <Input {...form.register("base_url")} placeholder="https://api.github.com" />
                 </div>
                 <div className="space-y-2">
                   <Label>Access Token</Label>
